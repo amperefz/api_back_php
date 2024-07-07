@@ -12,7 +12,7 @@
             //Convertimos el json a un array asociativo
             $datos = json_decode($json, true);
             //Si no están los datos requeridos
-            if (!isset($datos['titulo']) || !isset($datos['genero']) || !isset($datos['duracion']) || !isset(['imagen'])){
+            if (!isset($datos['titulo']) || !isset($datos['genero']) || !isset($datos['duracion']) || !isset($datos['imagen'])){
                 $this->response['status'] = "error";
                 $this->response['result'] = array("error_id" => "400", "error_msg" => "Datos enviados incompletos o con formato incorrecto.");
                 //Devolvemos un bad request
@@ -46,7 +46,7 @@
             }
         }    
         public function listarPeliculasSinPaginar(){
-            $query = "SELECT * FROM peliculas";
+            $query = "SELECT * FROM id22369754_proyectopeliculas";
             $datos = $this->obtenerDatos($query);
             return $datos;
         }           
@@ -60,14 +60,14 @@
                 $inicio = ($cantidad * ($pagina - 1)) + 1;
                 $cantidad = $cantidad * $pagina;
             }
-            $query = "SELECT * FROM peliculas LIMIT $inicio, $cantidad";
+            $query = "SELECT * FROM id22369754_proyectopeliculas LIMIT $inicio, $cantidad";
             $datos = $this->obtenerDatos($query);
             return $datos;
         }
 
         //Para buscar una película por su id
         public function obtenerPelicula($id){
-            $query = "SELECT * FROM peliculas WHERE id_pelicula = '$id'";
+            $query = "SELECT * FROM id22369754_proyectopeliculas WHERE id_pelicula = '$id'";
             $datos = $this->obtenerDatos($query);
             if ($datos) {
                 return $datos;
@@ -80,7 +80,7 @@
         public function buscarPelicula($nombre){
             //Pasar a minúscula el nombre y el campo de la base también
             $nombre = strtolower($nombre);
-            $query = "SELECT * FROM peliculas WHERE LOWER(titulo) LIKE '%$nombre%'";
+            $query = "SELECT * FROM id22369754_proyectopeliculas WHERE LOWER(titulo) LIKE '%$nombre%'";
             $datos = $this->obtenerDatos($query);
             if ($datos) {
                 return $datos;
@@ -111,7 +111,7 @@
                 $imagen = $datos['imagen'];
                 //Código para levantar la imagen y guardarla en el server y guardar la ruta en la base de datos
                 //Faltan validaciones para las fechas de lanzamiento
-                $query = "UPDATE peliculas SET titulo = '$titulo', genero = '$genero', duracion = '$duracion', imagen = '$imagen' WHERE id_pelicula = '$id'";
+                $query = "UPDATE id22369754_proyectopeliculas SET titulo = '$titulo', genero = '$genero', duracion = '$duracion', imagen = '$imagen' WHERE id_pelicula = '$id'";
                 $datos = $this->nonQuery($query);
                 if ($datos >= 1){
                     $respuesta = $this->response;
@@ -132,7 +132,7 @@
         }
 
         //Eliminar una película por su id de la base de datos
-        public functon eliminarPelicula($json){
+        public function eliminarPelicula($json){
             //Convertimos el json en un array asociativo
             $datos = json_decode($json, true);
             if (!isset($datos['id_pelicula'])){
@@ -145,11 +145,11 @@
                 return $this->response;
             }else{
                 $id_pelicula = $datos ['id_pelicula'];
-                $query = "DELETE FROM peliculas WHERE id_pelicula = '$id_pelicula'";
+                $query = "DELETE FROM id22369754_proyectopeliculas WHERE id_pelicula = '$id_pelicula'";
                 $datos = $this->nonQuery($query);
                 if ($datos >= 1) {
                     $respuesta = $this->response;
-                    $respuesta["result"] = array(
+                    $respuesta['result'] = array(
                         "mensaje" => "Registro eliminado correctamente."
                     );
                     return $respuesta;
@@ -164,5 +164,5 @@
                 }       
             }       
         }
-
+    }
 ?>
